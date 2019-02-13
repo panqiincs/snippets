@@ -14,10 +14,10 @@ void error(char *msg) {
 }
 
 int main(int argc, char **argv) {
-    int sockfd, port;
-    struct sockaddr_in serveraddr;
+    int port;
     char *host;
     char buf[100];
+    struct sockaddr_in serveraddr;
 
     if (argc != 3) {
         fprintf(stderr,"usage: %s <hostname> <port>\n", argv[0]);
@@ -33,15 +33,6 @@ int main(int argc, char **argv) {
     serveraddr.sin_family = AF_INET;
     serveraddr.sin_port = htons(port);
 
-    sockfd = socket(AF_INET, SOCK_STREAM, 0);
-    if (sockfd < 0) {
-        error("ERROR opening socket");
-    }
-
-    if (connect(sockfd, (struct sockaddr *)&serveraddr, sizeof(serveraddr)) < 0) {
-        error("ERROR connecting");
-    }
-
     for (int cnt = 1; cnt <= 5; cnt++) {
         switch (fork()) {
         case -1:
@@ -49,6 +40,13 @@ int main(int argc, char **argv) {
             break;
         case 0:
             snprintf(buf, 100, "I am client %d\n", cnt);
+            int sockfd = socket(AF_INET, SOCK_STREAM, 0);
+            if (sockfd < 0) {
+                error("ERROR opening socket");
+            }
+            if (connect(sockfd, (struct sockaddr *)&serveraddr, sizeof(serveraddr)) < 0) {
+                error("ERROR connecting");
+            }
             if (write(sockfd, buf, strlen(buf)) < 0) {
                 error("ERROR writing to socket");
             }
@@ -67,7 +65,6 @@ int main(int argc, char **argv) {
             }
         }
     }
-
-    close(sockfd);
+    
     exit(EXIT_SUCCESS);
 }
