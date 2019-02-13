@@ -5,6 +5,8 @@
 #include <sys/socket.h>
 #include <arpa/inet.h> 
 
+#define PORT_NUM 40713
+
 void error(char *msg) {
     perror(msg);
     exit(EXIT_FAILURE);
@@ -39,7 +41,7 @@ int main(int argc, char **argv) {
 
     server_addr.sin_family = AF_INET;
     server_addr.sin_addr.s_addr = htonl(INADDR_ANY);
-    server_addr.sin_port = htons(40713);
+    server_addr.sin_port = htons(PORT_NUM);
 
     if ((lfd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
         error("ERROR socket");

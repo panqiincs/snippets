@@ -9,7 +9,8 @@
 #include <sys/epoll.h>
 #include <arpa/inet.h> 
 
-#define MAX_EVENTS 16
+#define PORT_NUM   40713
+#define MAX_EVENTS 1024
 
 void error(char *msg) {
     perror(msg);
@@ -62,7 +63,7 @@ int main(int argc, char **argv) {
 
     server_addr.sin_family = AF_INET;
     server_addr.sin_addr.s_addr = htonl(INADDR_ANY);
-    server_addr.sin_port = htons(40713);
+    server_addr.sin_port = htons(PORT_NUM);
 
     if ((lfd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
         error("ERROR socket");
