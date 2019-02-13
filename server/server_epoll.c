@@ -30,7 +30,7 @@ void set_nonblocking(int fd)
 
 void do_echo(int fd) {
     char c, buf[100];
-    int buf_cnt = 0;
+    int cnt = 0;
     for (;;) {
         int n = read(fd, &c, 1);
         if (n < 0) {
@@ -41,12 +41,12 @@ void do_echo(int fd) {
         } else if (n == 0) {
             break;
         }
-        buf[buf_cnt++] = c;
+        buf[cnt++] = c;
         if (c == '\n') {
-            if (write(fd, buf, buf_cnt) < 0) {
+            if (write(fd, buf, cnt) < 0) {
                 error("ERROR write to client");
             }
-            buf_cnt = 0;
+            cnt = 0;
             continue;
         }
     }

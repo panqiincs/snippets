@@ -14,21 +14,20 @@ void error(char *msg) {
 
 void do_echo(int fd) {
     char c, buf[100];
-    int buf_cnt = 0;
+    int cnt = 0;
     for (;;) {
         int n = read(fd, &c, 1);
         if (n < 0) {
             error("ERROR read from client");
-        }
-        else if (n == 0) {
+        } else if (n == 0) {
             break;
         }
-        buf[buf_cnt++] = c;
+        buf[cnt++] = c;
         if (c == '\n') {
-            if (write(fd, buf, buf_cnt) < 0) {
+            if (write(fd, buf, cnt) < 0) {
                 error("ERROR write to client");
             }
-            buf_cnt = 0;
+            cnt = 0;
             continue;
         }
     }
@@ -49,7 +48,7 @@ int main(int argc, char **argv) {
     if (bind(lfd, (struct sockaddr *)&server_addr, sizeof(server_addr)) < 0) {
         error("ERROR bind");
     }
-    if (listen(lfd, 5) < 0) {
+    if (listen(lfd, 16) < 0) {
         error("ERROR listen");
     }
 
