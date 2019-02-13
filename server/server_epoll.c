@@ -91,7 +91,7 @@ int main(int argc, char **argv) {
         socklen_t len = sizeof(client_addr);
         int ready = epoll_wait(epfd, evlist, MAX_EVENTS, -1);
         if (ready == -1) {
-                error("ERROR epoll_wait");
+            error("ERROR epoll_wait");
         }
 
         printf("Ready: %d\n", ready);

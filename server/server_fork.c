@@ -68,7 +68,7 @@ int main(int argc, char **argv) {
         case 0:
             close(lfd);
             do_echo(cfd);
-            _exit(0);
+            _exit(EXIT_SUCCESS);
         default:
             close(cfd);
             while (wait(NULL) != -1) {
