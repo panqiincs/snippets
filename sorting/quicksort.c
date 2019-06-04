@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 void Exch(int *arr, int i, int j)
 {
@@ -22,14 +23,23 @@ int partition(int A[], int p, int r)
     return (i + 1);
 }
 
+int randomized_partition(int A[], int p, int r)
+{
+    int i = rand() % (r - p + 1) + p;
+    Exch(A, r, i);
+    return partition(A, p, r);
+}
+
 void quicksort(int A[], int p, int r)
 {
     if (p < r) {
-        int q = partition(A, p, r);
+        //int q = partition(A, p, r);
+        int q = randomized_partition(A, p, r);
         quicksort(A, p, q-1);
         quicksort(A, q+1, r);
     }
 }
+
 
 int main()
 {
